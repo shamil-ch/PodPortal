@@ -30,27 +30,36 @@ import { Textarea } from "@/components/ui/textarea"
 import GeneratePodcast from "@/components/GeneratePodcast"
 import GenerateThumbnail from "@/components/GenerateThumbnail"
 import { Loader } from "lucide-react"
+import { Id } from "@/convex/_generated/dataModel"
 
 
 const VoiceCategories = ['alloy','shimmer', 'nova', 'echo', 'fable', 'onyx'];
 
 const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
+  PodcastTitle: z.string().min(2),
+  PodcastDescription: z.string().min(2),
 })
 
 const Createpodcast = () => {
 
+  const [imagePrompt, setImagePrompt] = useState('')
+  const [imageStorageId, setImageStorageId] = useState<Id<"_storage"> | null>(null)
+  
+  const [audioUrl, setAudioUrl] = useState('')
+  const [audioStorageId, setAudioStorageId] = useState<Id<"_storage"> | null>(null)
+  const [audioDuration, setAudioDuration] = useState(0)
+  
   const [voiceType, setVoiceType] = useState<string | null>(null)
-
+  const [voicePrompt, setVoicePrompt] = useState('')
+  
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      PodcastTitle: "",
+      PodcastDescription: "",
     },
   })
  
@@ -70,7 +79,7 @@ const Createpodcast = () => {
         <div className="flex flex-col gap-[30px] border-b border-black-5 pb-10">
         <FormField
           control={form.control}
-          name="Podcast Title"
+          name="PodcastTitle"
           render={({ field }) => (
             <FormItem className="flex flex-col gap-2.5">
               <FormLabel className="text-16 font-bold text-white-1">Username</FormLabel>
@@ -110,7 +119,7 @@ const Createpodcast = () => {
 
         <FormField
           control={form.control}
-          name="Podcast Description"
+          name="PodcastDescription"
           render={({ field }) => (
             <FormItem className="flex flex-col gap-2.5">
               <FormLabel className="text-16 font-bold text-white-1">Description</FormLabel>
