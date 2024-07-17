@@ -1,4 +1,4 @@
-import { action } from "./server";
+import { action } from "./_generated/server";
 import { v } from "convex/values";
 import openAI from "openai";
 import { SpeechCreateParams } from "openai/resources/audio/speech.mjs"
